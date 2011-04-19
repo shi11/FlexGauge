@@ -35,8 +35,6 @@ package com.betterthantomorrow.components {
 	import flash.geom.Point;
 	
 	import mx.charts.chartClasses.GraphicsUtilities;
-	import mx.controls.Image;
-	import mx.controls.Label;
 	import mx.core.FlexGlobals;
 	import mx.core.UIComponent;
 	import mx.effects.Rotate;
@@ -45,6 +43,8 @@ package com.betterthantomorrow.components {
 	import mx.formatters.Formatter;
 	import mx.graphics.SolidColorStroke;
 	import mx.styles.CSSStyleDeclaration;
+	
+	import spark.components.Label;
 	
 	//Face Color
 	[Style(name = "faceColor", type = "Number", format = "Color", inherit = "yes")]
@@ -74,39 +74,18 @@ package com.betterthantomorrow.components {
 		
 		private var _pointerRotator:Rotate = new Rotate();
 		
-		//CHILDREN - You can use your own swf with the same symbol names to resking this gauge.
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'face')][Bindable]
-		private var _faceSymbol:Class;
-		private var _face:Image;
+		private var _face:Face;
 		private var _faceColorChanged:Boolean = true;
-		
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'faceShadow')][Bindable]
-		private var _faceShadowSymbol:Class;
-		private var _faceShadow:Image;
-		private var _faceShadowColorChanged:Boolean = true;
 		
 		private var _alerts:UIComponent;
 		private var _ticks:UIComponent;
 		
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'pointer')][Bindable]
-		private var _pointerSymbol:Class;
-		private var _pointer:Image;
+		private var _pointer:Pointer;
 		private var _pointerColorChanged:Boolean = true;
 		
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'bezel')][Bindable]
-		private var _bezelSymbol:Class;
-		private var _bezel:Image;
-		private var _bezelColorChanged:Boolean = false;
-		
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'nub')][Bindable]
-		private var _centerSymbol:Class;
-		private var _center:Image;
+		private var _center:Center;
 		private var _centerColorChanged:Boolean = true;
 
-		[@Embed(source = 'gauge/skins/GaugeSkins_Skin1.swf', symbol = 'reflection')][Bindable]
-		private var _reflectionSymbol:Class;
-		private var _reflection:Image;
-		
 		private var _valueLabel:Label = new Label();
 		private var _minLabel:Label;
 		private var _maxLabel:Label;
@@ -256,7 +235,7 @@ package com.betterthantomorrow.components {
 					this.faceColor = 0x1C1C1C;
 					this.faceShadowColor = 0x000000;
 					this.bezelColor = 0x999999;
-					this.centerColor = 0x777777;
+					this.centerColor = 0xffffff;
 					this.pointerColor = 0xEE3344;
 					this.ticksColor = 0xECECEC;
 					this.alertRatios = [3, 6];
@@ -275,12 +254,6 @@ package com.betterthantomorrow.components {
 			
 			if (styleProp == "faceColor") {
 				_faceColorChanged=true; 
-			}
-			else if (styleProp == "faceShadowColor") {
-				_faceShadowColorChanged = true; 
-			}
-			else if (styleProp == "bezelColor") {
-				_bezelColorChanged = true; 
 			}
 			else if (styleProp == "centerColor") {
 				_centerColorChanged = true; 
@@ -311,25 +284,12 @@ package com.betterthantomorrow.components {
 			_alerts = new UIComponent();
 			_ticks = new UIComponent();
 
-			_face = new Image();
-			_face.source = _faceSymbol;
-
-			_faceShadow = new Image();
-			_faceShadow.source = _faceShadowSymbol;
-
-			_pointer = new Image();
-			_pointer.source = _pointerSymbol;
+			_face = new Face();
+			
+			_pointer = new Pointer();
 			_pointer.filters = [_dropShadowFilter];
 
-			_bezel = new Image();
-			_bezel.source = _bezelSymbol;
-
-			_center = new Image();
-			_center.source = _centerSymbol;
-			_center.filters = [_dropShadowFilter];
-
-			_reflection = new Image();
-			_reflection.source = _reflectionSymbol;
+			_center = new Center();
 
 			_minLabel = new Label();
 			_minLabel.setStyle("textAlign", "left");
@@ -344,13 +304,10 @@ package com.betterthantomorrow.components {
 			_pointerRotator.target = _pointer;
 
 			addChild(_face);
-			addChild(_faceShadow);
 			addChild(_alerts);
 			addChild(_ticks);
 			addChild(_pointer);
-			addChild(_bezel);
 			addChild(_center);
-			addChild(_reflection);
 			addChild(_valueLabel);
 			addChild(_minLabel);
 			addChild(_maxLabel);
@@ -365,11 +322,6 @@ package com.betterthantomorrow.components {
 				_face.height = _face.width;
 				_face.x = (_diameter - _face.width)/2;
 				_face.y = _face.x;
-				
-				_faceShadow.width = _face.width;
-				_faceShadow.height = _face.height;
-				_faceShadow.y = _face.y;
-				_faceShadow.x = _face.x;
 				
 				_ticks.height = _diameter;
 				_ticks.width = _ticks.height;
@@ -388,19 +340,10 @@ package com.betterthantomorrow.components {
 				
 				setPointer();
 								
-				_bezel.width = _diameter;
-				_bezel.height = _bezel.width;
-				_bezel.x = (_diameter - _bezel.width) / 2;
-				_bezel.y = _bezel.x;
-				
 				_center.width = _diameter * NUB_DIAMETER;
 				_center.height = _center.width;
 				_center.x = (_diameter - _center.width) / 2;
 				_center.y = _center.x;
-				
-				_reflection.width = _diameter * REFLECTION_WIDTH;
-				_reflection.height = _diameter * REFLECTION_HEIGHT;
-				_reflection.x = _reflection.y = _diameter * REFLECTION_OFFSET;
 				
 				_dropShadowFilter.distance = 10;
 				_dropShadowFilter.blurX = 10;
@@ -451,7 +394,7 @@ package com.betterthantomorrow.components {
 			_valueLabel.setStyle("fontAntiAliasType", getStyle("fontAntiAliasType"));
 			_valueLabel.visible = _showValue;
 			
-			_reflection.alpha = _glareAlpha;
+			//_reflection.alpha = _glareAlpha;
 			
 			_minLabel.setStyle("color", fontColor);
 			_maxLabel.setStyle("color", fontColor);
@@ -465,14 +408,6 @@ package com.betterthantomorrow.components {
 			if (_faceColorChanged) {
 				transformColor(_face, getStyle("faceColor"));
 				_faceColorChanged = false;
-			}
-			if (_faceShadowColorChanged) {
-				transformColor(_faceShadow, getStyle("faceShadowColor"));
-				_faceShadowColorChanged = false;
-			}
-			if (_bezelColorChanged) {
-				transformColor(_bezel, getStyle("bezelColor"));
-				_bezelColorChanged = false;
 			}
 			if (_centerColorChanged) {
 				transformColor(_center, getStyle("centerColor"));

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" width="10" height="10">
+	
+	<fx:Script>
+		<![CDATA[
+			override public function set transform(value:Transform):void{
+				super.transform = value;
+				circleColor.color = transform.colorTransform.color;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Ellipse left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:SolidColor id="circleColor" />
+		</s:fill>
+	</s:Ellipse>
+	
+</s:Group>
