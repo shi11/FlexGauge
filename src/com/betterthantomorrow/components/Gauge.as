@@ -28,6 +28,10 @@ THE SOFTWARE.
 */
 
 package com.betterthantomorrow.components {
+	import com.betterthantomorrow.components.gauge.skins.Center;
+	import com.betterthantomorrow.components.gauge.skins.Face;
+	import com.betterthantomorrow.components.gauge.skins.Pointer;
+	
 	import flash.display.CapsStyle;
 	import flash.display.LineScaleMode;
 	import flash.filters.DropShadowFilter;
