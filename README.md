@@ -1,35 +1,4 @@
 ##A standalone Gauge component for Adobe Flex 4.
 
-Skinnable, somewhat stylable and quite flexible. Though lots of stuff is still
-hardcoded. There are probably bugs too. I know it doesn't really work for negative
-max values, yet.
-
-See a demo here: [http://dl.dropbox.com/u/3259215/gauge-demo/gaugetestflash.html](http://dl.dox.com/u/3259215/gauge-demo/gaugetestflash.html)
-View source is enable in the demo so you can see how the component is used.
-
-###Quick howto use this in your Flex 4 project:
-Clone (or, preferably, fork-then-clone) this project and then import it into Flash Builder.
-It should get imported as a Flex Library project. Then you have at least two options:
-
-1. Add the gauge library project to the Build Path of the project you need the gauge in.
-2. Build the library project and copy the resulting swc-file out of the bin/ folder and put it in the libs/ folder of your gauge-needing project.
-
-Option 1 is to prefer I'd say, because then you can much easier follow what's going on in the debugger, fix bugs in the gauge and such.
-Option 2 assumes you have a standard setup project with a library folder called libs/ setup in your projects Build Path.
-
-###Keep your fork in sync
-If you fork this repository and still want to keep your fork in sync with any bug fixes/changes in this repo that I either make
-myself or pull in from pull requests from others; This is the easiest way I have found:
-
-1. Add this repository as a remote upstream to the clone of your fork: <br>
- `git remote add upstream https://PEZ@github.com/PEZ/FlexGauge.git`
-2. Then fetch from upstream:<br>
- `git fetch upstream`
-3. Whenever you want to merge in any changes in the main repo:<br>
- `git merge upstream/master`
-
-That last step is assuming you want to merge the master branch of course, but that's the only branch there is yet anyway. =)
-
-###Origins
-The gauge is based on [this work](http://www.smithfox.com/?e=48) by Smith & Fox.
-Which in turn was based on the now famous Degrafa Gauge by Thomas Gonzales.
+This is a forked version of the FlexGauge component https://github.com/PEZ/FlexGauge that removes a dependency on a .swf skin file.
+It instead uses MXML and the drawing api to render custom components.
